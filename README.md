@@ -1,2 +1,2 @@
-# NLP
-Repo to store learning in NLP's
+# language-detector
+NLP application to detect the language from a text

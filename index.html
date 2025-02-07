@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classificador de Texto</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 50px;
+        }
+        textarea {
+            width: 300px;
+            height: 100px;
+            margin-bottom: 10px;
+        }
+        button {
+            padding: 10px 15px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        #resultado {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Language Identification</h1>
+    <p>Type something to check the language:</p>
+
+    <textarea id="textoInput" placeholder="Type Here..."></textarea><br>
+    <button onclick="analisarTexto()">Analyze</button>
+
+    <div id="resultado"></div>
+
+    <script>
+        async function analisarTexto() {
+            const texto = document.getElementById("textoInput").value;
+            const url = "http://127.0.0.1:5000/prever"; // URL da API Flask
+            
+            if (texto.trim() === "") {
+                alert("Please, insert a text");
+                return;
+            }
+
+            try {
+                const response = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ entrada: texto })
+                });
+
+                const data = await response.json();
+                document.getElementById("resultado").innerText = `Your text is in: ${data.previsao}`;
+            } catch (error) {
+                console.error("Erro trying to connect to the API:", error);
+                document.getElementById("resultado").innerText = "Error with the request.";
+            }
+        }
+    </script>
+
+</body>
+</html>
